@@ -1,0 +1,4 @@
+.nicegui/
+.env/
+*.pyc
+__pycache__/
