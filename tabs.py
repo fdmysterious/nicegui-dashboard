@@ -4,18 +4,22 @@ import logging
 from dataclasses import dataclass
 
 class NiceLogHandler(logging.Handler):
-    def __init__(self, log):
+    def __init__(self, log, status_label):
         super().__init__()
 
-        self.log = log
+        self.log          = log
+        self.status_label = status_label
 
     def emit(self, record):
         log_entry = self.format(record)
         self.log.push(log_entry)
+        status_label.set_text(record.msg)
 
 log = logging.getLogger(__file__)
 log.setLevel(logging.DEBUG)
 
+def panic():
+    ui.notify("PANIC MODE ACTIVATED!!!")
 
 @dataclass
 class ValueStorage:
@@ -32,21 +36,21 @@ if __name__ in {"__main__", "__mp_main__"}:
         ui.label("Test dashboard")
 
     with ui.footer() as footer:
-        ui.label("Conn. OK")
+        status_label = ui.label("")
+        ui.element("q-space")
+        ui.icon("circle", color="red")
+        ui.label("Status 1")
+        ui.icon("circle", color="green")
+        ui.label("Status 2")
 
-    with ui.left_drawer().classes("bg-blue-100") as left_drawer:
+    with ui.left_drawer(value=False).classes("bg-blue-100") as left_drawer:
         ui.label("Side menu")
         with ui.tabs().props("vertical") as tabs:
             tab_ctrl = ui.tab("Control", icon="build")
             tab_logs = ui.tab("Logs", icon="dvr")
 
     with ui.page_sticky(position="bottom-right", x_offset=20, y_offset=20):
-        with ui.grid(columns=2):
-            ui.icon("circle", color="red")
-            ui.label("Status 1")
-
-            ui.icon("circle", color="green")
-            ui.label("Status 2")
+        ui.button("Panic", color="red", icon="error", on_click=panic)
 
     with ui.tab_panels(tabs, value="A").classes("w-full"):
         with ui.tab_panel(tab_ctrl):
@@ -66,7 +70,7 @@ if __name__ in {"__main__", "__mp_main__"}:
     # Bind logger to UI
     logging.basicConfig(level=logging.DEBUG)
     root_log    = logging.getLogger("")
-    log_handler = NiceLogHandler(ui_log)
+    log_handler = NiceLogHandler(ui_log, status_label)
     formatter   = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     log_handler.setFormatter(formatter)
     root_log.addHandler(log_handler)
