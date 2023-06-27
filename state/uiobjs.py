@@ -4,5 +4,11 @@ Dumb global UI objects
 ======================
 """
 
-left_drawer = None
-tab_list    = None
+# Panes object
+left_drawer  = None
+footer       = None
+
+# Various UI elements
+tab_list     = None
+status_label = None
+log_area     = None

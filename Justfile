@@ -13,17 +13,28 @@ check_venv:
 create_venv:
 	python3 -m venv {{venv_folder}}
 
+install_venv:
+	{{venv_folder}}/bin/pip install -r requirements.txt
+
 # Ensure the virtual environment exist
 ensure_venv:
 	#!/usr/bin/sh
 	status_venv=`just check_venv`
 	if [ $status_venv -eq 0 ] ; then
 		just create_venv
+		if [ test -f "requirements.txt" ] ; then
+			echo "> Install dependencies"
+			just install_venv
+		fi
 	fi
 
 # Shorthand to pip command in venv
-pip *args:
+pip *args: ensure_venv
 	{{venv_folder}}/bin/pip {{args}}
+
+# Save dependencies in requirements.txt file
+freeze:
+	@just pip freeze > requirements.txt
 
 ##########################################
 # Mosquitto recipes
@@ -50,5 +61,5 @@ ensure_mosquitto:
 		just start_mosquitto
 	fi
 
-serve: ensure_mosquitto
+serve: ensure_venv ensure_mosquitto
 	{{venv_folder}}/bin/python3 dashboard.py
