@@ -42,7 +42,7 @@ freeze:
 
 # Start the mosquitto container
 start_mosquitto:
-	docker run --rm --name {{mosquitto_container_name}} -d -p 9001:9001 -p 1883:1883 -v mosquitto.conf:/mosquitto/config/ eclipse-mosquitto
+	docker run --rm --name {{mosquitto_container_name}} -d -p 9001:9001 -p 1883:1883 -v `pwd`/mosquitto.conf:/mosquitto/config/mosquitto.conf eclipse-mosquitto
 
 # Stop the mosquitto container
 stop_mosquitto:
@@ -60,6 +60,9 @@ ensure_mosquitto:
 		echo "> Start mosquitto"
 		just start_mosquitto
 	fi
+
+logs_mosquitto *args: ensure_mosquitto
+	docker logs {{args}} {{mosquitto_container_name}} 
 
 serve: ensure_venv ensure_mosquitto
 	{{venv_folder}}/bin/python3 dashboard.py

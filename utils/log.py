@@ -42,9 +42,9 @@ def init():
 
     # Bind logger to UI
     logging.basicConfig(level=logging.DEBUG)
-    formatter   = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    formatter      = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
-    root_log    = logging.getLogger("")
+    root_log       = logging.getLogger("")
     status_handler = NiceStatusHandler(uiobjs.status_label)
 
     log_handler    = NiceLogHandler(uiobjs.log_area)

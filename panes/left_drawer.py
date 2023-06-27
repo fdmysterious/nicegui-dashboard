@@ -6,7 +6,7 @@ import tabs
 from state import uiobjs
 
 def init():
-    with ui.left_drawer(value=False).classes("bg-blue-100") as left_drawer:
+    with ui.left_drawer(value=False) as left_drawer:
         uiobjs.left_drawer = left_drawer
 
         ui.label("Current tab")
