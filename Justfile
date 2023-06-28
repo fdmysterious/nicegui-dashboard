@@ -20,9 +20,9 @@ install_venv:
 ensure_venv:
 	#!/usr/bin/sh
 	status_venv=`just check_venv`
-	if [ $status_venv -eq 0 ] ; then
+	if [ "$status_venv" -eq 0 ] ; then
 		just create_venv
-		if [ test -f "requirements.txt" ] ; then
+		if [ -f "requirements.txt" ] ; then
 			echo "> Install dependencies"
 			just install_venv
 		fi
@@ -56,7 +56,7 @@ check_mosquitto:
 ensure_mosquitto:
 	#!/usr/bin/sh
 	mosquitto_status=`just check_mosquitto`
-	if [ $mosquitto_status -eq 0 ] ; then
+	if [ "$mosquitto_status" -eq 0 ] ; then
 		echo "> Start mosquitto"
 		just start_mosquitto
 	fi
