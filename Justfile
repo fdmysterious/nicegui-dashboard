@@ -66,3 +66,6 @@ logs_mosquitto *args: ensure_mosquitto
 
 serve: ensure_venv ensure_mosquitto
 	{{venv_folder}}/bin/python3 dashboard.py
+
+start_knob_inout: ensure_venv
+	{{venv_folder}}/bin/python3 knob_inout.py
