@@ -1,5 +1,5 @@
 [dashboard]
-title = "Incredible dashboard!"
+title     = "Incredible dashboard!"
 
 [mqtt.broker]
 host      = "127.0.0.1"
