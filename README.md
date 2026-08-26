@@ -1,8 +1,12 @@
+
+
 Simple dashboard using nicegui
 ==============================
 
 This repo shows how it can be possible to use the [nicegui](https://nicegui.io) python library to set up a dashboard
 connected to a MQTT broker.
+
+Configuration is loaded from `config.toml`.
 
 ## Dependencies
 
